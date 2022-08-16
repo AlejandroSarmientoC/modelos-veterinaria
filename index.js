@@ -399,6 +399,9 @@ function total() {
     var costoTotal1 = 0
     var costoTotal2 = 0
 
+    const codigoMascota = document.querySelector('#codPet').value
+    const ciPr = document.querySelector('#ciProp').value
+
     function valor(costoTotal) {
         if (document.querySelector('#baño0').checked) {
             costoTotal += 25
@@ -453,6 +456,67 @@ function total() {
     var total = val0 + val1 + val2
 
     console.log(total)
-    document.querySelector('#total').innerHTML = `El valor Total a pagar es: $${total}`
-    document.querySelector('#correcto').innerHTML = `<div class="alert alert-success" role="alert">Servicio agendado correctamente</div>`
+
+    if(codigoMascota == '' && ciPr == ''){
+        document.querySelector('#correcto').innerHTML = `<div class="alert alert-danger" role="alert">Campos vacíos</div>`
+    }
+    else if(isNaN(ciPr)){
+        document.querySelector('#correcto').innerHTML = `<div class="alert alert-danger" role="alert">Solo se permiten números</div>`
+    }
+    else{
+
+        const getM = async (codigoMascota) => {
+            try{
+                const {error, data} =  await cliente.from('mascota').select('*').eq('codigoM', codigoMascota)
+                if(error) throw new Error(error)
+                console.log(data)
+                document.querySelector('#datosCM').innerHTML = `<br><br><h1 class="text-center"><strong>DATOS Cliente Mascota</strong></h1>
+                ${data.map(mascota => `
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Nombre mascota: ${mascota.nameM}</p>
+                        <p>Tipo mascota: ${mascota.typeM}</p>
+                        <p>Genero mascota: ${mascota.gender}</p>
+                        <p>Raza mascota : ${mascota.raza}</p>
+                        <p>Color mascota: ${mascota.color}</p>
+                    </div>
+                </div>
+                `)}
+                `
+            }catch(error){
+                console.log(error)
+            }
+        }
+    
+        const getC = async (ciProp) => {
+            try{
+                const {error, data} =  await cliente.from('cliente').select('*').eq('ci', ciProp)
+                if(error) throw new Error(error)
+                console.log(data)
+                document.querySelector('#prop').innerHTML = `<h1 class="text-center"><strong>DATOS Cliente Propietario</strong></h1>
+                ${data.map(cliente => `
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Nombre: ${cliente.name}</p>
+                        <p>Apellido: ${cliente.lastName}</p>
+                        <p>Dirección: ${cliente.address}</p>
+                        <p>Teléfono: ${cliente.phone}</p>
+                    </div>
+                </div>
+                `)}
+                `
+            }catch(error){
+                console.log(error)
+            }
+        }
+        getC(ciPr)
+        getM(codigoMascota)
+        console.log(codigoMascota)
+    
+        document.querySelector('#total').innerHTML = `<strong>El valor Total a pagar es: $${total}</strong>`
+        document.querySelector('#correcto').innerHTML = `<div class="alert alert-success" role="alert">Servicio agendado correctamente</div>`
+
+    }
+
+    
 }
