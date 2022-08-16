@@ -270,6 +270,15 @@
                 <div class="container">
                     <div class="row gx-lg-5 align-items-center">
                         <div id="correcto"></div>
+
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="C.I Propietario" id="ciProp">
+                        </div>
+
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Codigo Mascota" id="codPet">
+                        </div>
+
                         <h4><strong>Servicios</strong></h4>
                         <div class="row">
                             <div class="col">
@@ -344,7 +353,9 @@
                             </div>
                         </div>
                         <br><br>
-                        <button onclick="total()">GUARDAR CITA</button>
+                        <button onclick="total()" type="submit">GUARDAR CITA</button>
+                        <div id="datosCM" onclick="total()"></div>
+                        <div id="prop" onclick="total()"></div>
                         <div id="total">
                         </div>
                     </div>
